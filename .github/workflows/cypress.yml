@@ -1,28 +1,33 @@
-# nome da pipeline
 name: Tests Cypress
 
-# Quando a pipeline será executada
-# Neste caso, toda vez que houver um pull request para a branch main
 on:
   pull_request:
     branches: [main]
 
 jobs:
-  # Job: rodar os testes Cypress
   cypress-run:
-    # Ambiente onde a pipeline vai rodar
     runs-on: windows-latest
 
     steps:
-      # Clonar o projeto
+      # 1️⃣ Clonar o repositório
       - name: Checkout do projeto
         uses: actions/checkout@v3
 
-      # Executar Cypress
+      # 2️⃣ Configurar Node 22 (evita erros de engine incompatível)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      # 3️⃣ Instalar dependências
+      - name: Instalar dependências
+        run: npm ci
+
+      # 4️⃣ Rodar Cypress com integração no Cypress Cloud
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
           record: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
- 
