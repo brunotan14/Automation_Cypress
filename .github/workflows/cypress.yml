@@ -34,7 +34,7 @@ jobs:
 
       # 5 relátorio com o mochawesome
       - name: Cypress report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: mochawesome-report
           path: cypress/reports/html
